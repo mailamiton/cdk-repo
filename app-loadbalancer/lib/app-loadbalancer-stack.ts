@@ -22,12 +22,14 @@ export class AppLoadbalancerStack extends cdk.Stack {
 
     mySG.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(22), 'SSH frm anywhere');
     mySG.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(80), 'For Application Deployment');
+    mySG.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3000), 'For Application Deployment');
     //mySG.addIngressRule(ec2.Peer.ipv4('10.200.0.0/24'), ec2.Port.tcp(80), 'Redshift Ingress1');
 
     const asg = new autoscaling.AutoScalingGroup(this, 'ASG', {
       vpc,
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MICRO),
       machineImage: linux,
+      keyName : 'vanir3rd',
       minCapacity: 1,
       maxCapacity: 5
     });
